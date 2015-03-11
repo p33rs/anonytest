@@ -1,6 +1,7 @@
 <?php
 /**
  * Admittedly, I am not great at writing tests, but I'd like to be.
+ * Bootstrap with autoload.php.
  */
 class ZoneTest extends PHPUnit_Framework_TestCase {
     public function testExample()
