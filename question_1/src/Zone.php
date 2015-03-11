@@ -56,7 +56,7 @@ class Zone {
         // the letter M followed by a number 1-3 followed by a number 1-2
         [
             'name' => 'Manufacturing Districts',
-            'pattern' => '/^M[1-3]\-(1|2)]$/',
+            'pattern' => '/^M[1-3]\-(1|2)$/',
         ],
         // "M1-" followed by a number 1-6, then "/R", then a number 5-10
         [
