@@ -9,8 +9,8 @@
 function theRuns(array $input)
 {
     $result = [];
-    /** @var int $tally */
-    $tally = 0;
+    $up = 0;
+    $down = 0;
     foreach ($input as $key => $value) {
         if (!is_int($value)) {
             throw new \Exception('expected integer array');
@@ -19,41 +19,22 @@ function theRuns(array $input)
             continue;
         }
 
-        // This is nice but doesn't account for overlap.
-        /*
+        if ($value - 1 == $input[$key - 1]) {
+            $up++;
+            echo $key . ": increments to ".$up."\n";
+        } elseif ($up) {
+            $result[] = $key - $up - 1;
+            echo $key . ": increment ends at ".$up."\n";
+            $up = 0;
+        }
 
- 0    1
- 1    1
- 2    3         v
- 3    5         v
- 4    6  add 3  v  ^
- 5    8            ^
- 6    10           ^
- 7    11 add 6  v  ^
- 8    10        v
- 9    9         v
-10    8  add 7  v  ^
-11    9            ^
-12    10           ^
-13    11 add 10    ^
-14    7
-
-         */
-        if ($tally <= 0 && $value - 1 == $input[$key - 1]) {
-            echo '$key = ' . $key . ', decr' . "\n";
-            $tally--;
-        } elseif ($tally >= 0 && $value + 1 == $input[$key - 1]) {
-            echo '$key = ' . $key . ', incr' . "\n";
-            $tally++;
-        } else {
-            echo '$key = ' . $key . ', reset';
-            $abs = abs($tally);
-            if ($abs) {
-                $result[] = $key - $abs;
-                echo ' and add ' . ($key - $abs) . ' to results';
-            }
-            echo "\n";
-            $tally = 0;
+        if ($value + 1 == $input[$key - 1]) {
+            $down++;
+            echo $key . ": decrements to ".$down."\n";
+        } elseif ($down) {
+            $result[] = $key - $down - 1;
+            echo $key . ": decrement ends at ".$down."\n";
+            $down = 0;
         }
     };
     return $result ?: null;
