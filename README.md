@@ -34,7 +34,15 @@ Interesting, since one assumes that dealing with uncooperative government websit
 with the position.
 Tried to make it easy to add other scrapers (for Building and Plumbing permits) at a later date.
 
+## setup
+
+Question 1 and 2 use phpunit tests.
+Question 3 will require composer and [php-dom](http://php.net/manual/en/book.dom.php).
+
 ## invocation
+
+The scripts are run from the command line:
+
     php question_1/run.php question_1/input.txt
     php question_2/run.php question_2/input.php
     php question_3/run.php --block 259 --lot 26
