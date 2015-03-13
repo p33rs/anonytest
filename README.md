@@ -17,9 +17,9 @@ More difficult than originally anticipated, because of possible overlapping:
 
     1  ^
     2  ^
-    3  ^ v
-    2    v
-    1  ^ v
+    3  ^  v
+    2     v
+    1  ^  v
     2  ^
     3  ^
 
