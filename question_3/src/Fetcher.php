@@ -13,12 +13,22 @@ class Fetcher
     /** @var Client */
     private $guzzle;
 
+    /**
+     * @param Client $guzzle
+     * @param CookieJar $jar
+     */
     public function __construct (Client $guzzle, CookieJar $jar)
     {
         $this->setJar($jar);
         $this->guzzle = $guzzle;
     }
 
+    /**
+     * @param string $url
+     * @param string $type
+     * @param array $data
+     * @return string
+     */
     public function fetch ($url, $type = 'POST', array $data = [])
     {
         $options = [ 'body' => $data ];
@@ -29,10 +39,15 @@ class Fetcher
         return (string) $this->guzzle->send($request)->getBody();
     }
 
+    /** @return CookieJar */
     public function getJar() {
         return $this->jar;
     }
 
+    /**
+     * @param CookieJar $jar
+     * @return $this
+     */
     public function setJar(CookieJar $jar = null) {
         $this->jar = $jar;
         return $this;

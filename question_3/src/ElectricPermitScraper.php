@@ -55,11 +55,10 @@ class ElectricPermitScraper extends AbstractScraper
         );
     }
 
-    /** return block259, lot26 Permit #, Block, Lot, Street #, Street Name, Unit, Current Stage and Stage Date */
-
     private function parse($results)
     {
-        var_export($results);
+        $parser = new ElectricPermitParser($results);
+        return $parser->readList();
     }
 
 }

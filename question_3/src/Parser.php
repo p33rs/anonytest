@@ -2,7 +2,12 @@
 namespace p33rs;
 class Parser
 {
-    private $document;
+    /** @var DOMDocument */
+    protected $document;
+
+    /**
+     * @param string $markup
+     */
     public function __construct($markup)
     {
         $document = \DOMDocument::loadHTML($markup);
@@ -11,6 +16,10 @@ class Parser
         }
         $this->document = $document;
     }
+    /**
+     * @param string $id
+     * @return string
+     */
     public function getValue($id)
     {
         $element = $this->document->getElementById($id);

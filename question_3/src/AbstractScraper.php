@@ -17,11 +17,20 @@ abstract class AbstractScraper
     /** @var Parser */
     protected $parser;
 
+    /**
+     * @param Fetcher $fetcher
+     */
     public function __construct(Fetcher $fetcher)
     {
         $this->fetcher = $fetcher;
     }
 
+    /**
+     * @param string $block
+     * @param string $lot
+     * @param array $options
+     * @return mixed
+     */
     public abstract function scrape($block, $lot, array $options = []);
 
     /**
@@ -44,6 +53,7 @@ abstract class AbstractScraper
      * We got some hidden form fields with our response that we require
      *   to maintain our session.
      * @param string $page
+     * @return ViewState
      */
     protected function getStateData($page)
     {
