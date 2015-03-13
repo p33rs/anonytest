@@ -10,6 +10,12 @@ class ElectricPermitScraper extends AbstractScraper
     const STATE_EVENTTARGET = '__EVENTTARGET';
     const STATE_EVENTVALIDATION = '__EVENTVALIDATION';
 
+    /**
+     * @param string $block
+     * @param string $lot
+     * @param array $options
+     * @return array
+     */
     public function scrape ($block, $lot, array $options = [])
     {
         if (empty($block)) {
@@ -21,18 +27,28 @@ class ElectricPermitScraper extends AbstractScraper
         return $this->getPermits($block, $lot);
     }
 
+    /**
+     * @param string $block
+     * @param string $lot
+     * @return array
+     */
     private function getPermits($block, $lot)
     {
-        // First, make a request to create a query.
+        // First, make a request to get our session started.
         $this->createQuery($block, $lot);
-        // Next, find the "one page" link and request that.
+        // Next, load a page of results so we can click the "one page" link.
         $permitList = $this->getPermitList();
+        // We need to embed some data from that page into our request for the one-page.
         $permitState = $this->getStateData($permitList);
+        // Finally, request all of the results in a single page.
         $results = $this->requestFullList($permitState);
-        // Parse the result.
+        // Parse the result. Return an array.
         return $this->parse($results);
     }
 
+    /**
+     * @return string
+     */
     private function getPermitList()
     {
         return $this->fetcher->fetch(
@@ -41,6 +57,10 @@ class ElectricPermitScraper extends AbstractScraper
         );
     }
 
+    /**
+     * @param ViewState $viewState
+     * @return string
+     */
     private function requestFullList(ViewState $viewState)
     {
         $postData = [
@@ -55,6 +75,10 @@ class ElectricPermitScraper extends AbstractScraper
         );
     }
 
+    /**
+     * @param $results
+     * @return array
+     */
     private function parse($results)
     {
         $parser = new ElectricPermitParser($results);

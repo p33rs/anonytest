@@ -2,12 +2,15 @@
 namespace p33rs;
 class ElectricPermitParser extends Parser {
 
+    /** @var string The HTML ID of the results table. */
     const ID_TABLE = 'InfoReq1_dgEID';
 
+    /** @var string[] We'll scrape <th> for accurate label names. */
     private $keys = [];
 
-    /** return block259, lot26 Permit #, Block, Lot, Street #, Street Name, Unit, Current Stage and Stage Date */
-
+    /**
+     * @return array
+     */
     public function readList()
     {
         /** @var \DOMElement $table */
@@ -21,7 +24,6 @@ class ElectricPermitParser extends Parser {
         foreach ($rows as $key => $row) {
             if (!$key) {
                 $this->keys = $this->getHeaders($row);
-                var_export($this->keys);
                 continue;
             }
             $result[] = $this->getRowData($row);
@@ -29,6 +31,10 @@ class ElectricPermitParser extends Parser {
         return $result;
     }
 
+    /**
+     * @param \DOMElement $row table header row
+     * @return string[]
+     */
     private function getHeaders(\DOMElement $row)
     {
         $cells = $row->getElementsByTagName('th');
@@ -40,7 +46,8 @@ class ElectricPermitParser extends Parser {
     }
 
     /**
-     *
+     * @param \DOMElement $row table content row
+     * @return string[]
      */
     private function getRowData(\DOMElement $row)
     {

@@ -4,13 +4,14 @@ class Parser
 {
     /** @var DOMDocument */
     protected $document;
-
     /**
      * @param string $markup
      */
     public function __construct($markup)
     {
+        libxml_use_internal_errors(true); // this markup sure is awful!
         $document = \DOMDocument::loadHTML($markup);
+        libxml_use_internal_errors(false);
         if (!$document) {
             throw new \DomainException('Expected valid markup');
         }

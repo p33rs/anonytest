@@ -50,8 +50,8 @@ abstract class AbstractScraper
     }
 
     /**
-     * We got some hidden form fields with our response that we require
-     *   to maintain our session.
+     * We got some hidden form fields with each response that certain actions require
+     *   in order to maintain the session. This method pulls that data from the page.
      * @param string $page
      * @return ViewState
      */
