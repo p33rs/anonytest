@@ -3,9 +3,6 @@
  * Treating this as if it's a static utility method in a Model class.
  * Wasn't 100% sure on how to interpret the given ranges,
  *   so made notes on what I'm attempting to match.
- * Regex is maybe overkill for the simple strings ("PARK"), but specifying
- *   a match type ("regex" or "equals") as well as additional options
- *   seems like unnecessary complexity
  */
 class Zone {
 
