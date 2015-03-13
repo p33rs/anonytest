@@ -3,13 +3,13 @@ namespace p33rs;
 class ElectricPermitScraper extends AbstractScraper
 {
 
-    const URL_RESULTS = 'http://dbiweb.sfgov.org/dbipts/default.aspx?page=AddressData2&ShowPanel=EID';
+    const URL_PAGED_LIST = 'http://dbiweb.sfgov.org/dbipts/default.aspx?page=AddressData2&ShowPanel=EID';
+    const URL_FULL_LIST = 'http://dbiweb.sfgov.org/dbipts/Default2.aspx?page=AddressData2&ShowPanel=EID';
     const TARGET_SHOW_ALL = 'InfoReq1$btnEidShowAll';
     const STATE_VIEWSTATE = '__VIEWSTATE';
     const STATE_EVENTTARGET = '__EVENTTARGET';
     const STATE_EVENTVALIDATION = '__EVENTVALIDATION';
 
-    /** return block259, lot26 Permit #, Block, Lot, Street #, Street Name, Unit, Current Stage and Stage Date */
     public function scrape ($block, $lot, array $options = [])
     {
         if (empty($block)) {
@@ -24,39 +24,42 @@ class ElectricPermitScraper extends AbstractScraper
     private function getPermits($block, $lot)
     {
         // First, make a request to create a query.
-        $query = $this->createQuery($block, $lot);
+        $this->createQuery($block, $lot);
         // Next, find the "one page" link and request that.
-        $stateData = $this->getStateData($query);
-        $list = $this->getList($stateData);
+        $permitList = $this->getPermitList();
+        $permitState = $this->getStateData($permitList);
+        $results = $this->requestFullList($permitState);
         // Parse the result.
-        return $this->parse($list);
+        return $this->parse($results);
     }
 
-
-
-    // requires:
-    /*
-     * Cookie variable: ASP.NET_SessionId
-     */
-    private function getList(ViewState $viewState)
+    private function getPermitList()
     {
-        if (empty($viewState)) {
-            throw new \BadFunctionCallException('expect view state');
-        }
-        if (empty($eventValidation)) {
-            throw new \BadFunctionCallException('expected event validation');
-        }
+        return $this->fetcher->fetch(
+            self::URL_PAGED_LIST,
+            'POST'
+        );
+    }
+
+    private function requestFullList(ViewState $viewState)
+    {
         $postData = [
             self::STATE_EVENTTARGET => self::TARGET_SHOW_ALL,
             self::STATE_VIEWSTATE => $viewState->getViewState(),
             self::STATE_EVENTVALIDATION => $viewState->getEventValidation(),
         ];
-
+        return $this->fetcher->fetch(
+            self::URL_FULL_LIST,
+            'POST',
+            $postData
+        );
     }
+
+    /** return block259, lot26 Permit #, Block, Lot, Street #, Street Name, Unit, Current Stage and Stage Date */
 
     private function parse($results)
     {
-
+        var_export($results);
     }
 
 }

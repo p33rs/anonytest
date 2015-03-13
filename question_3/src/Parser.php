@@ -5,7 +5,7 @@ class Parser
     private $document;
     public function __construct($markup)
     {
-        $document = DOMDocument::loadHTML($markup);
+        $document = \DOMDocument::loadHTML($markup);
         if (!$document) {
             throw new \DomainException('Expected valid markup');
         }

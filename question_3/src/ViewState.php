@@ -2,6 +2,7 @@
 /**
  * maybe overkill. but lends consistency + predictability.
  */
+namespace p33rs;
 class ViewState{
     /** @var string */
     private $state;

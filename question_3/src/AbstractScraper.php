@@ -7,7 +7,7 @@ namespace p33rs;
 abstract class AbstractScraper
 {
 
-    const URL_QUERY = 'http://dbiweb.sfgov.org/dbipts/default.aspx?page=AddressQuery';
+    const URL_QUERY = 'http://dbiweb.sfgov.org/dbipts/?page=address&';
     const FIELD_VIEWSTATE = '__VIEWSTATE';
     const FIELD_EVENTVALIDATION = '__EVENTVALIDATION';
 
@@ -43,13 +43,16 @@ abstract class AbstractScraper
     /**
      * We got some hidden form fields with our response that we require
      *   to maintain our session.
-     * @param string $queryPage
+     * @param string $page
      */
-    protected function getStateData($queryPage)
+    protected function getStateData($page)
     {
-        $parser = new Parser($queryPage);
+        $parser = new Parser($page);
         $state = $parser->getValue(self::FIELD_VIEWSTATE);
         $validation = $parser->getValue(self::FIELD_EVENTVALIDATION);
+        if (!$state || !$validation) {
+            throw new \RuntimeException('Got invalid query page');
+        }
         return new ViewState($state, $validation);
     }
 
